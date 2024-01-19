@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="d-flex flex-wrap px-5 pt-3 align-items-center">
+  <div class="col-6">
+    <h1>Welcome to Tuition Media</h1>
+    <p>Tuition Media is a leading platform in the education sector, dedicated to transforming the way you experience learning. Our platform seamlessly integrates technology and education, offering a comprehensive range of courses that cover a diverse array of subjects. From academic tutorials to skill development programs, each course is meticulously designed to provide you with valuable insights and practical knowledge.</p>
+    <p>At Tuition Media, we believe in more than just education; we believe in creating an immersive learning experience. Exploring our platform is like embarking on a journey through a world of knowledge and discovery. Our commitment to your educational journey goes beyond just providing courses; we strive to build a community where learners and educators come together. Tuition Media—where every lesson becomes an exploration of intellectual growth and the joy of acquiring new skills.</p>
+  </div>
+  <div class="col-6">
+    <img style="width: 80%; margin-left: 100px;" src="{% static 'header.jpeg' %}" alt="Tuition Media Header Image" />
+  </div>
+</div>
+
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Explore Our Tuitions</h2>
+
+  <form method="get" class="mb-3">
+    {{ filter_form.as_p }}
+    <button type="submit" class="btn btn-info">Apply Filter</button>
+  </form>
+
+  <div class="row">
+    {% for tuition in tuitions %}
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ tuition.title }}</h5>
+            <p class="card-text">{{ tuition.description|truncatewords:20 }}</p>
+            <a href="{% url 'tuitions:tuition-detail' pk=tuition.id %}" class="btn btn-primary">Details</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

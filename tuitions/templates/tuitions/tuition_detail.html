@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-8">
+        <h2>{{ tuition.title }}</h2>
+        <p>{{ tuition.description }}</p>
+
+        <h3 class="mt-4">Tuition Details</h3>
+        <ul>
+          <li><strong>Subjects:</strong> {{ tuition.subjects }}</li>
+          <li><strong>Type:</strong> {{ tuition.type }}</li>
+          <li><strong>Class:</strong> {{ tuition.grade }}</li>
+          <li><strong>Gender:</strong> {{ tuition.get_gender_display }}</li>
+          <li><strong>Preferred Gender:</strong> {{ tuition.get_pref_gender_display }}</li>
+          <li><strong>Student Count:</strong> {{ tuition.student_count }}</li>
+          <li><strong>Teaching Time:</strong> {{ tuition.teaching_time }}</li>
+          <li><strong>Days per Week:</strong> {{ tuition.days_per_week }}</li>
+          <li><strong>Location:</strong> {{ tuition.location }}</li>
+          <li><strong>Monthly Salary:</strong> {{ tuition.monthly_salary }}</li>
+          <li><strong>Availability:</strong> {% if tuition.availability %}Available{% else %}Not Available{% endif %}</li>
+        </ul>
+
+        {% if user.is_authenticated and not user_has_applied %}
+          <!-- Apply for Tuition Form -->
+          <h4 class="mt-4">Apply for This Tuition</h4>
+          <form method="post" action="{% url 'tuitions:tuition-detail' pk=tuition.id %}">
+            {% csrf_token %}
+            {{ application_form.as_p }}
+            <button type="submit" class="btn btn-success">Apply Now</button>
+          </form>
+        {% endif %}
+
+        <!-- Display Reviews -->
+        <div class="card m-2">
+          <h5 class="p-3">Reviews</h5>
+          {% for review in reviews %}
+            <div class="card-body border m-2">
+              <p><b>{{ review.user.username }}</b> {{ review.created_on }}</p>
+              <p>{{ review.review_text }}</p>
+            </div>
+          {% endfor %}
+        </div>
+
+        <!-- Leave Review Form -->
+        {% if user.is_authenticated and user_has_accepted_tuition %}
+          <h3 class="mt-4">Leave a Review</h3>
+          <form method="post" action="{% url 'tuitions:tuition-detail' pk=tuition.id %}">
+            {% csrf_token %}
+            {{ review_form.as_p }}
+            <button type="submit" class="btn btn-primary">Submit Review</button>
+          </form>
+        {% endif %}
+      </div>
+
+      <div class="col-md-4">
+        <img src="{% static 'tu.jpeg' %}" class="img-fluid" alt="Tuition Image">
+        
+        {% if user_has_applied %}
+          <p class="mt-4">You have already applied for this tuition.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
