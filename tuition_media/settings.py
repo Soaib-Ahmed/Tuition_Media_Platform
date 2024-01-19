@@ -30,6 +30,7 @@ SECRET_KEY = 'django-insecure-1d@r9uc7tn&ksc@u3q%e38%n_yvp%ebnv$ka&7g$*te8z=chbk
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = ['https://tuition-media-platform.onrender.com','https://*.127.0.0.1']
 
 
 # Application definition
